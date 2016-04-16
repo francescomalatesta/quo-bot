@@ -1,7 +1,10 @@
 <?php
 
 $app->post('webhook', function(\Illuminate\Http\Request $request) use ($app) {
-    file_put_contents('test.dat', json_encode($request->all()));
+    $incomingMessage = json_decode($request->get('entry'), true)[0];
+    $incomingMessageText = $incomingMessage['messaging']['message']['text'];
+
+    file_put_contents('test.dat', $incomingMessageText);
 });
 
 $app->get('webhook', function (\Illuminate\Http\Request $request) use ($app) {
