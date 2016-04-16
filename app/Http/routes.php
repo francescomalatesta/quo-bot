@@ -1,10 +1,9 @@
 <?php
 
 $app->post('webhook', function(\Illuminate\Http\Request $request) use ($app) {
-    $incomingMessage = $request->get('entry')[0];
-    $incomingMessageText = $incomingMessage['messaging']['message']['text'];
+    $incomingMessage = $request->get('entry');
 
-    file_put_contents('test.dat', $incomingMessageText);
+    file_put_contents('test.dat', serialize($incomingMessage));
 });
 
 $app->get('webhook', function (\Illuminate\Http\Request $request) use ($app) {
