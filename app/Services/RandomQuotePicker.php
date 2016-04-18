@@ -7,20 +7,13 @@ use App\Quote;
 
 class RandomQuotePicker
 {
-    private $quotes;
-
-    public function __construct()
-    {
-        $this->quotes = json_decode(file_get_contents('quotes.json'), true);
-    }
-
     public function pick()
     {
-        $randomQuote = $this->quotes[array_rand($this->quotes)];
+        $result = app('db')->select('SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1;');
 
         return new Quote(
-            $randomQuote['quote'],
-            $randomQuote['author']
+            $result[0]->quote,
+            $result[0]->author
         );
     }
 }
