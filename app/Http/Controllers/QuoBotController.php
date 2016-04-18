@@ -34,10 +34,23 @@ class QuoBotController extends Controller
         $incomingMessageText = $incomingMessages[0]['messaging'][0]['message']['text'];
         $incomingMessageSenderId = $incomingMessages[0]['messaging'][0]['sender']['id'];
 
-        $quote = $picker->pick();
-        $sender->sendQuote(
-            $incomingMessageSenderId,
-            $quote
-        );
+        if($this->isAskingForQuote($incomingMessageText)) {
+            $quote = $picker->pick();
+            $sender->sendQuote(
+                $incomingMessageSenderId,
+                $quote
+            );
+        }
+    }
+
+    /**
+     * Verifies if the user is asking for a quote (the "quote" string is in the message).
+     *
+     * @param $incomingMessageText
+     * @return bool
+     */
+    private function isAskingForQuote($incomingMessageText)
+    {
+        return (strpos(strtolower($incomingMessageText), 'quote') !== false);
     }
 }
